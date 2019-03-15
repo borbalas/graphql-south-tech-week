@@ -1,0 +1,28 @@
+{
+  "name": "graphql-south-tech-week",
+  "version": "1.0.0",
+  "description": "An example of Graphql with PokeApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "TODO",
+    "start": "nodemon ."
+  },
+  "keywords": [],
+  "author": "Mario Borbalas",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-node5": "10.5.0",
+    "babel-register": "^6.26.0",
+    "cors": "^2.8.5",
+    "dataloader": "^1.4.0",
+    "express": "^4.16.4",
+    "express-graphql": "0.4.9",
+    "graphql": "0.4.16",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "5.0.0-beta6",
+    "eslint": "1.10.3",
+    "nodemon": "^1.18.4"
+  }
+}
