@@ -5,6 +5,11 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+.logo{
+  margin: auto;
+  margin-bottom: 20px;
+}
+
 /* Container */
 .container {
   display: flex;

@@ -1,7 +1,7 @@
 {
   "name": "graphql-south-tech-week",
   "version": "1.0.0",
-  "description": "An example of Graphql with PokeApi",
+  "description": "An example of GraphQL with PokeApi",
   "main": "index.js",
   "scripts": {
     "test": "TODO",
@@ -16,8 +16,8 @@
     "cors": "^2.8.5",
     "dataloader": "^1.4.0",
     "express": "^4.16.4",
-    "express-graphql": "0.4.9",
-    "graphql": "0.4.16",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.1.1",
     "node-fetch": "^2.3.0"
   },
   "devDependencies": {

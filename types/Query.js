@@ -15,29 +15,35 @@ function fetchJson(keys) {
 const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
 const cacheMap = new Map();
 
-// Use DataLoader!!!
-//const loadByURL = new DataLoader(keys => Promise.all(keys.map(fetchJson)), {cacheMap});
-const loadByURL = { load: fetchJson };
+// Switch in order to check DataLoader!!!
+  const loadByURL = new DataLoader(keys => Promise.all(keys.map(fetchJson)), {cacheMap});
+  //const loadByURL = { load: fetchJson };
 
 
 const Pokemon = new GraphQLObjectType({
   name: 'Pokemon',
-  description: 'Type representing the Pokemon 🐀 Gotta Catch \'Em All!!',
+  description: `Type representing the Pokémon 🐀
+    Gotta Catch 'Em All!!`,
   fields: () => ({
     id: {
+      description: 'Unique identifier',
       type: GraphQLInt
     },
     name: {
+      description: 'Name of the Pokémon',
       type: GraphQLString
     },
     abilities: {
+      description: 'List of the abilities',
       type: new GraphQLList(Ability),
       resolve: (root) => root.abilities.map((item) => loadByURL.load(item.ability.url))
     },
     sprites: {
+      description: 'Front and Back sprites',
       type: Sprite
     },
     types: {
+      description: 'List of Pokémon types',
       type: new GraphQLList(GraphQLString),
       resolve: (root) => root.types.map((item) => item.type.name)
     },
@@ -49,20 +55,25 @@ const Ability = new GraphQLObjectType({
   description: 'Type representing the ability',
   fields: () => ({
     id: {
+      description: 'Unique identifier',
       type: GraphQLInt
     },
     name: {
+      description: 'Name of the Ability',
       type: GraphQLString
     },
     description: {
+      description: 'Description of the Ability',
       type: GraphQLString,
       resolve: (root) => root.effect_entries ? root.effect_entries[0].short_effect : null
     },
     generation: {
+      description: 'Name of the generarion [i|ii|iii|iv|v|vi|vii|viii]',
       type: GraphQLString,
       resolve: (root) => root.generation.name
     },
     pokemons: {
+      description: 'List of the Pokémons with this ability',
       type: new GraphQLList(Pokemon),
       resolve: (root) => root.pokemon.map((item) => loadByURL.load(item.pokemon.url))
     }
@@ -89,9 +100,11 @@ export default new GraphQLObjectType({
   description: 'Top-level query',
   fields: () => ({
     abilities: {
+      description: 'Query for one or all the Pokémon abilities',
       type: new GraphQLList(Ability),
       args: {
         id: {
+          description: 'An array with only one Ability defined will be reterived if the Id argument is defined',
           type: GraphQLInt
         }
       },
