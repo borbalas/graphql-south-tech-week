@@ -121,7 +121,7 @@ body:after {
     position: relative;
     display: block;
     width: 100px;
-    height: 150px;
+    height: 120px;
     margin: 0 auto;
     order: 1;
 }
@@ -142,6 +142,7 @@ body:after {
     background-size: contain;
     background-position: center;
     transition: 0.3s ease;
+    background-image: url(http://localhost:8080/src/images/interrogation.png);
 }
 
 .sprite:hover {
@@ -275,7 +276,9 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     height: 65vh;
-    width: 650px;
+    width: 700px;
+    border-radius: 8px;
+    min-height: 525px;
     max-width: 95vw;
     max-height: 95vw;
     opacity: 0;
@@ -303,19 +306,28 @@ body {
     box-shadow: none;
 }
 
-.card-container .ability .ability__category {
-    order: 2;
+.column .ability .ability__category {
+    order: 1 !important;
 }
 
- .card-container .ability .ability__pokemon {
+.column .ability .ability__excerpt {
+    order: 1 !important;
+}
+
+.card-container .ability .ability__category {
+    order: 2;
+    text-align: center;
+}
+
+.card-container .ability .ability__pokemon {
     order: 3;
 }
 
- .card-container .ability div {
+.card-container .ability div {
     order: 4;
 }
 
- .card-container .ability .ability__sprite {
+.card-container .ability .ability__sprite {
     order: 1;
 }
 
@@ -323,7 +335,12 @@ body {
     cursor: pointer;
     list-style: none;
     margin-top: 20px;
+    padding: 10px;
     text-transform: capitalize;
+}
+
+.card-container .ability ul li:hover {
+    background-color: #f1f1f1;
 }
 
 .card-container .close-button {
