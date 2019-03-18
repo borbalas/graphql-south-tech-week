@@ -92,11 +92,11 @@ body {
 }
 
 .pokemon {
-  height: 50px;
+  height: 80px;
   flex: 1;
   max-width: 33%;
   min-width: 33%;
   background-repeat: no-repeat;
-  background-size: 80%;
+  background-size: contain;
   background-position: center;
 }

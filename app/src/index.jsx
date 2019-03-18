@@ -26,9 +26,14 @@ class View extends React.Component {
 
       this.onPokemonSelected = this.onPokemonSelected.bind(this);
       this.onAbilitySelected = this.onAbilitySelected.bind(this);
+      this.onCloseSelectedPokemon = this.onCloseSelectedPokemon.bind(this);
    }
    onPokemonSelected(pokemon) {
       this.setState({ selectedPokemon: pokemon });
+   }
+
+   onCloseSelectedPokemon(pokemon) {
+      this.setState({ selectedPokemon: undefined });
    }
 
    onAbilitySelected(abilityId) {
@@ -66,7 +71,7 @@ class View extends React.Component {
    render() {
       return (
          <div>
-            <Pokemon data={this.state.selectedPokemon} onAbilitySelected={this.onAbilitySelected} />
+            <Pokemon data={this.state.selectedPokemon} onAbilitySelected={this.onAbilitySelected} onCloseSelectedPokemon={this.onCloseSelectedPokemon} />
             <Ability data={this.state.selectdAbility} onPokemonSelected={this.onPokemonSelected} />
             <div className="container">
                <img className="logo" src="http://localhost:8080/src/logo.png" />

@@ -16,9 +16,38 @@ const POKEAPI_BASE_URL = 'https://pokeapi.co/api/v2';
 const cacheMap = new Map();
 
 // Switch in order to check DataLoader!!!
-  const loadByURL = new DataLoader(keys => Promise.all(keys.map(fetchJson)), {cacheMap});
-  //const loadByURL = { load: fetchJson };
+const loadByURL = new DataLoader(keys => Promise.all(keys.map(fetchJson)), { cacheMap });
+//const loadByURL = { load: fetchJson };
 
+const Ability = new GraphQLObjectType({
+  name: 'Ability',
+  description: 'Type representing the ability',
+  fields: () => ({
+    id: {
+      description: 'Unique identifier',
+      type: GraphQLInt
+    },
+    name: {
+      description: 'Name of the Ability',
+      type: GraphQLString
+    },
+    description: {
+      description: 'Description of the Ability',
+      type: GraphQLString,
+      resolve: (root) => root.effect_entries && root.effect_entries.length > 0 ? root.effect_entries[0].short_effect : null
+    },
+    generation: {
+      description: 'Name of the generarion [i|ii|iii|iv|v|vi|vii|viii]',
+      type: GraphQLString,
+      resolve: (root) => root.generation.name
+    },
+    pokemons: {
+      description: 'List of the Pokémons with this ability',
+      type: new GraphQLList(Pokemon),
+      resolve: (root) => root.pokemon.map((item) => loadByURL.load(item.pokemon.url))
+    }
+  })
+});
 
 const Pokemon = new GraphQLObjectType({
   name: 'Pokemon',
@@ -50,36 +79,6 @@ const Pokemon = new GraphQLObjectType({
   })
 });
 
-const Ability = new GraphQLObjectType({
-  name: 'Ability',
-  description: 'Type representing the ability',
-  fields: () => ({
-    id: {
-      description: 'Unique identifier',
-      type: GraphQLInt
-    },
-    name: {
-      description: 'Name of the Ability',
-      type: GraphQLString
-    },
-    description: {
-      description: 'Description of the Ability',
-      type: GraphQLString,
-      resolve: (root) => root.effect_entries ? root.effect_entries[0].short_effect : null
-    },
-    generation: {
-      description: 'Name of the generarion [i|ii|iii|iv|v|vi|vii|viii]',
-      type: GraphQLString,
-      resolve: (root) => root.generation.name
-    },
-    pokemons: {
-      description: 'List of the Pokémons with this ability',
-      type: new GraphQLList(Pokemon),
-      resolve: (root) => root.pokemon.map((item) => loadByURL.load(item.pokemon.url))
-    }
-  })
-});
-
 const Sprite = new GraphQLObjectType({
   name: 'Sprite',
   description: 'Type representing the Sprite',
@@ -91,7 +90,12 @@ const Sprite = new GraphQLObjectType({
     back: {
       type: GraphQLString,
       resolve: (root) => root.back_default
-    }
+    }, 
+    default: {
+      type: GraphQLString,
+      deprecationReason: 'Use "front"',
+      resolve: (root) => root.front_default
+    }    
   })
 });
 

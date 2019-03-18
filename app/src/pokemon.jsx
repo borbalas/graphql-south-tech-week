@@ -44,6 +44,7 @@ export default class Pokemon extends React.Component {
             </ul>
           </div>
           <div style={{ float: "left" }} ><Sprite data={pokemon} /></div>
+          <button onClick={e => (this.props.onCloseSelectedPokemon())}>Close</button>
         </article>
       </div>
     );
