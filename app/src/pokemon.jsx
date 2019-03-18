@@ -28,25 +28,23 @@ export default class Pokemon extends React.Component {
     }
 
     return (
-      <div className="column">
-        <article className="ability">
-          <h2 className="ability__category" style={titleStyles}>{pokemon.name}</h2>
-          <div style={{ float: "right" }} className="ability__pokemon">
-            {pokemon.types.map((type) => (<h3 className="ability__category" style={styles}>{type}</h3>))}
-          </div>
-          <div style={{ marginTop: 10 }}>
-            <h3 className="ability__title">Abilities</h3>
-            <ul>
-              {pokemon.abilities.map((ability) =>
-                <li onClick={e => (this.props.onAbilitySelected(ability.id))}>
-                  {ability.name}
-                </li>)}
-            </ul>
-          </div>
-          <div style={{ float: "left" }} ><Sprite data={pokemon} /></div>
-          <button onClick={e => (this.props.onCloseSelectedPokemon())}>Close</button>
-        </article>
-      </div>
+      <article className="ability">
+        <h2 className="ability__category" style={titleStyles}>{pokemon.name}</h2>
+        <div style={{ float: "right" }} className="ability__pokemon">
+          {pokemon.types.map((type) => (<h3 className="ability__category" style={styles}>{type}</h3>))}
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <h3 className="ability__title">Abilities</h3>
+          <ul>
+            {pokemon.abilities.map((ability) =>
+              <li onClick={e => (this.props.onAbilitySelected(ability.id))}>
+                {ability.name}
+              </li>)}
+          </ul>
+        </div>
+        <div className={'ability__sprite'} ><Sprite data={pokemon} /></div>
+
+      </article>
     );
   }
 }

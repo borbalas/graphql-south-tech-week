@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Ability from './ability';
 import Pokemon from './pokemon';
+import Modal from './modal';
 
 // const App = () => (
 //    <div>
@@ -20,20 +21,20 @@ class View extends React.Component {
          data: {
             abilities: [],
             selectedPokemon: undefined,
-            selectdAbility: undefined
+            selectedAbility: undefined
          }
       }
 
       this.onPokemonSelected = this.onPokemonSelected.bind(this);
       this.onAbilitySelected = this.onAbilitySelected.bind(this);
-      this.onCloseSelectedPokemon = this.onCloseSelectedPokemon.bind(this);
+      this.onCloseModal = this.onCloseModal.bind(this);
    }
    onPokemonSelected(pokemon) {
       this.setState({ selectedPokemon: pokemon });
    }
 
-   onCloseSelectedPokemon(pokemon) {
-      this.setState({ selectedPokemon: undefined });
+   onCloseModal(pokemon) {
+      this.setState({ selectedPokemon: undefined, selectedAbility: undefined });
    }
 
    onAbilitySelected(abilityId) {
@@ -61,7 +62,7 @@ class View extends React.Component {
   ` };
       this.runQuery(query).then(data => {
          if (data) {
-            this.setState({ selectdAbility: data.abilities[0] });
+            this.setState({ selectedAbility: data.abilities[0] });
          } else {
             console.log("No data was found");
          }
@@ -69,12 +70,21 @@ class View extends React.Component {
    }
 
    render() {
+      const {selectedPokemon, selectedAbility} = this.state;
+
       return (
          <div>
-            <Pokemon data={this.state.selectedPokemon} onAbilitySelected={this.onAbilitySelected} onCloseSelectedPokemon={this.onCloseSelectedPokemon} />
-            <Ability data={this.state.selectdAbility} onPokemonSelected={this.onPokemonSelected} />
+            {selectedPokemon || selectedAbility ? <Modal onClose={this.onCloseModal} animation={true}>
+               {selectedPokemon ? <Pokemon data={selectedPokemon} onAbilitySelected={this.onAbilitySelected} /> : null}
+               {selectedAbility ? <Ability data={selectedAbility} onPokemonSelected={this.onPokemonSelected} /> : null}
+            </Modal>: null}
+            {/* {selectedAbility ? <Modal onClose={this.onCloseSelectedAbility}>
+              
+            </Modal>: null} */}
+            
+            
             <div className="container">
-               <img className="logo" src="http://localhost:8080/src/logo.png" />
+               <img className="logo" src="http://localhost:8080/src/images/logo.png" />
                {this.state.data ? this.state.data.abilities.map((ability) =>
                   <Ability data={ability} onPokemonSelected={this.onPokemonSelected} />
                ) : 'Loading...'}

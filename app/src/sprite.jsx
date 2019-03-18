@@ -13,7 +13,7 @@ export default class Sprite extends React.Component {
     };
 
     return (
-      <div className="pokemon" style={styles}
+      <div className="sprite" style={styles}
         onMouseOver={e => (e.currentTarget.style.backgroundImage = `url(${pokemon.sprites.back})`)}
         onMouseOut={e => (e.currentTarget.style.backgroundImage = `url(${pokemon.sprites.front})`)}
         onClick={e => (this.props.onClick(pokemon))}
