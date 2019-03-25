@@ -1,10 +1,18 @@
 # graphql-south-tech-week
+
+[<img src="resources/southtechweek.jpg">](https://southtechweek.com/ponentes/mario-borbalas/)
+
 An example of Graphql with PokeApi
 
-npm install
-npm start
 
+# How to graphql server
 
-cd app
-npm install
-npm start
+    npm install
+    npm start
+
+# How to react app
+    cd app
+        npm install
+        npm start
+
+[See GraphqlVsREST.pptx](resources/GraphqlVsREST.pptx)
