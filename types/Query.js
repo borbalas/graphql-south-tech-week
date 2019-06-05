@@ -1,6 +1,7 @@
 import {
   GraphQLObjectType,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLList,
   GraphQLString
 } from 'graphql';
@@ -74,8 +75,26 @@ const Pokemon = new GraphQLObjectType({
     types: {
       description: 'List of Pokémon types',
       type: new GraphQLList(GraphQLString),
-      resolve: (root) => root.types.map((item) => item.type.name)
+      resolve: (root) => {
+        const orderedTypes = root.types.sort((a, b) => a.slot - b.slot);
+        return orderedTypes.map((item) => item.type.name);
+      }
     },
+    height: {
+      description: 'Height of the Pokémon in metres',
+      type: GraphQLFloat,
+      resolve: (root) => root.height / 10
+    },
+    weight: {
+      description: 'Weight of the Pokémon in Kilograms',
+      type: GraphQLFloat,
+      resolve: (root) => root.weight / 10
+    },
+    species: {
+      description: 'Species details of the Pokémon',
+      type: Species,
+      resolve: (root) => loadByURL.load(root.species.url)
+    }
   })
 });
 
@@ -90,12 +109,27 @@ const Sprite = new GraphQLObjectType({
     back: {
       type: GraphQLString,
       resolve: (root) => root.back_default
-    }, 
+    },
     default: {
       type: GraphQLString,
       deprecationReason: 'Use "front"',
       resolve: (root) => root.front_default
-    }    
+    }
+  })
+});
+
+const Species = new GraphQLObjectType({
+  name: 'Species',
+  description: 'Type representing the Species',
+  fields: () => ({
+    description: {
+      type: GraphQLString,
+      resolve: (root) => root.flavor_text_entries.find((entry) => entry.version.name === 'heartgold' && entry.language.name === 'en').flavor_text
+    },
+    genus: {
+      type: GraphQLString,
+      resolve: (root) => root.genera.find((entry) => entry.language.name === 'en').genus
+    }
   })
 });
 
@@ -116,6 +150,21 @@ export default new GraphQLObjectType({
         loadByURL.load(`${POKEAPI_BASE_URL}/ability/${args.id}/`)
           .then(json => [json]) :
         loadByURL.load(`${POKEAPI_BASE_URL}/ability?limit=300`)
+          .then(json => json.results.map((item) => loadByURL.load(item.url)))
+    },
+    pokemon: {
+      description: 'Query for one or all the Pokémon',
+      type: new GraphQLList(Pokemon),
+      args: {
+        id: {
+          description: 'An array with only one Pokemon defined will be retrieved if the Id argument is defined',
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, args) => args.id ?
+        loadByURL.load(`${POKEAPI_BASE_URL}/pokemon/${args.id}/`)
+          .then(json => [json]) :
+        loadByURL.load(`${POKEAPI_BASE_URL}/pokemon?limit=151`)
           .then(json => json.results.map((item) => loadByURL.load(item.url)))
     }
   })
