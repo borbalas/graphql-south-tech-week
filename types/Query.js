@@ -94,6 +94,11 @@ const Pokemon = new GraphQLObjectType({
       description: 'Species details of the Pokémon',
       type: Species,
       resolve: (root) => loadByURL.load(root.species.url)
+    },
+    stats: {
+      description: 'List of the Pokémon stats',
+      type: new GraphQLList(Stat),
+      resolve: (root) => root.stats.sort((a, b) => a.stat.name > b.stat.name)
     }
   })
 });
@@ -129,6 +134,21 @@ const Species = new GraphQLObjectType({
     genus: {
       type: GraphQLString,
       resolve: (root) => root.genera.find((entry) => entry.language.name === 'en').genus
+    }
+  })
+});
+
+const Stat = new GraphQLObjectType({
+  name: 'Stat',
+  description: 'Type representing the Stat',
+  fields: () => ({
+    name: {
+      type: GraphQLString,
+      resolve: (root) => root.stat.name
+    },
+    value: {
+      type: GraphQLInt,
+      resolve: (root) => root.base_stat
     }
   })
 });
